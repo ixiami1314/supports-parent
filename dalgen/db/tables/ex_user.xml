@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE table SYSTEM "http://sources.jungle.net/svn/dtd/table-config-1.0.dtd">
+
+<table sqlname="ex_user">
+    <!-- 不需要配置的列请删除 -->
+
+    <sql id="ExUser.columns">
+        id, user_name, user_sex, gmt_create, gmt_modified, create_by, modify_by
+    </sql>
+
+    <operation name="insert" paramtype="object">
+        <sql>
+            INSERT INTO ex_user (
+            id ,user_name ,user_sex ,gmt_create ,gmt_modified ,create_by ,modify_by
+            ) VALUES (
+            ? ,? ,? ,? ,? ,? ,?
+            )
+        </sql>
+    </operation>
+
+    <operation name="delete">
+        <sql>
+            DELETE FROM ex_user WHERE
+            id = ?
+        </sql>
+    </operation>
+
+    <operation name="update" paramtype="object">
+        <sql>
+            UPDATE ex_user SET
+            user_name = ? ,user_sex = ? ,gmt_create = ? ,gmt_modified = ? ,create_by = ? ,modify_by = ?
+            WHERE
+            id = ?
+        </sql>
+    </operation>
+
+    <operation name="queryById" multiplicity="one">
+        <sql>
+            SELECT
+            <include refid="ExUser.columns"/>
+            FROM ex_user
+            WHERE
+            id = ?
+        </sql>
+    </operation>
+
+
+    <operation name="findPage" multiplicity="paging">
+        <sql>
+            SELECT
+            <include refid="ExUser.columns"/>
+            FROM ex_user
+        </sql>
+    </operation>
+
+    <operation name="queryByName" multiplicity="paging">
+        <sql>
+            SELECT
+            <include refid="ExUser.columns"/>
+            FROM ex_user
+            WHERE
+            user_name = ?
+        </sql>
+    </operation>
+
+    <operation name="queryByConditions" paramtype="parameterObject" multiplicity="paging">
+        <sql>
+            SELECT
+            <include refid="ExUser.columns"/>
+            FROM ex_user
+            WHERE 1=1
+            <dynamic>
+                <isNotEmpty prepend="AND" property="userName">
+                    user_name = #userName#
+                </isNotEmpty>
+                <isNotEmpty prepend="AND" property="userSex">
+                    user_sex = #userSex#
+                </isNotEmpty>
+            </dynamic>
+            ORDER BY gmt_modified DESC
+        </sql>
+    </operation>
+
+</table>

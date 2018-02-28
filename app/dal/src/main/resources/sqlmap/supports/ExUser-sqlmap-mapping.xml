@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap>
+
+    
+    <resultMap id="RM.ExUser" class="com.jc.support.supports.dal.dataobject.ExUserDO">
+		<result property="id" column="id" javaType="long" jdbcType="BIGINT"  nullValue="0"  />
+		<result property="userName" column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"  />
+		<result property="userSex" column="user_sex" javaType="int" jdbcType="INTEGER"  nullValue="0"  />
+		<result property="gmtCreate" column="gmt_create" javaType="java.util.Date" jdbcType="TIMESTAMP"  />
+		<result property="gmtModified" column="gmt_modified" javaType="java.util.Date" jdbcType="TIMESTAMP"  />
+		<result property="createBy" column="create_by" javaType="java.lang.String" jdbcType="VARCHAR"  />
+		<result property="modifyBy" column="modify_by" javaType="java.lang.String" jdbcType="VARCHAR"  />
+    </resultMap>
+    
+	<sql id="ExUser.columns">
+		id, user_name, user_sex, gmt_create, gmt_modified, create_by, modify_by
+	</sql>
+		
+
+	
+	
+    
+	<insert id="supports.ExUser.insert">
+		INSERT INTO ex_user (
+            id ,user_name ,user_sex ,gmt_create ,gmt_modified ,create_by ,modify_by
+            ) VALUES (#id#,#userName#,#userSex#,#gmtCreate#,#gmtModified#,#createBy#,#modifyBy#)
+		<selectKey resultClass="long" type="post" keyProperty="id" >
+            select last_insert_id()
+    	</selectKey>        
+	</insert>
+	
+	
+	<delete id="supports.ExUser.delete">
+		DELETE FROM ex_user WHERE
+            id = #id#
+    </delete>
+    
+	
+	<update id="supports.ExUser.update">
+		UPDATE ex_user SET
+            user_name = #userName# ,user_sex = #userSex# ,gmt_create = #gmtCreate# ,gmt_modified = #gmtModified# ,create_by = #createBy# ,modify_by = #modifyBy#
+            WHERE
+            id = #id#
+	</update>
+	
+    
+	
+	<select id="supports.ExUser.queryById" resultMap="RM.ExUser" >
+    	SELECT
+ /*supports.ExUser.queryById*/             <include refid="ExUser.columns"/>
+            FROM ex_user
+            WHERE
+            id = #id#
+	</select>	
+
+	    
+	
+	
+    
+	
+	<select id="supports.ExUser.findPage" resultMap="RM.ExUser" >
+    	SELECT
+ /*supports.ExUser.findPage*/             <include refid="ExUser.columns"/>
+            FROM ex_user
+			limit #offset#,#limit#
+	</select>	
+
+	<select id="supports.ExUser.findPage.count" resultClass="long" >
+    	select  /*supports.ExUser.findPage.count*/ count(*)  FROM ex_user
+	</select>
+	    
+	
+	
+    
+	
+	<select id="supports.ExUser.queryByName" resultMap="RM.ExUser" >
+    	SELECT
+ /*supports.ExUser.queryByName*/             <include refid="ExUser.columns"/>
+            FROM ex_user
+            WHERE
+            user_name = #userName#
+			limit #offset#,#limit#
+	</select>	
+
+	<select id="supports.ExUser.queryByName.count" resultClass="long" >
+    	select  /*supports.ExUser.queryByName.count*/ count(*)  FROM ex_user
+            WHERE
+            user_name = #userName#
+	</select>
+	    
+	
+	
+    
+	
+	<select id="supports.ExUser.queryByConditions" resultMap="RM.ExUser" >
+    	SELECT
+ /*supports.ExUser.queryByConditions*/             <include refid="ExUser.columns"/>
+            FROM ex_user
+            WHERE 1=1
+            <dynamic>
+                <isNotEmpty prepend="AND" property="userName">
+                    user_name = #userName#
+                </isNotEmpty>
+                <isNotEmpty prepend="AND" property="userSex">
+                    user_sex = #userSex#
+                </isNotEmpty>
+            </dynamic>
+            ORDER BY gmt_modified DESC
+			limit #offset#,#limit#
+	</select>	
+
+	<select id="supports.ExUser.queryByConditions.count" resultClass="long" >
+    	select  /*supports.ExUser.queryByConditions.count*/ count(*)  FROM ex_user
+            WHERE 1=1
+            <dynamic>
+                <isNotEmpty prepend="AND" property="userName">
+                    user_name = #userName#
+                </isNotEmpty>
+                <isNotEmpty prepend="AND" property="userSex">
+                    user_sex = #userSex#
+                </isNotEmpty>
+            </dynamic>
+	</select>
+	    
+	
+	
+    
+
+</sqlMap>
+
